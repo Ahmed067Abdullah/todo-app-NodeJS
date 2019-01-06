@@ -6,7 +6,14 @@ const getTodos = (req, res) => {
 
 const addTodo = (req, res) => {
   todoObj = req.body;
-  if (todos.find(todo => todo.id === todoObj.id))
+  if(!todoObj.hasOwnProperty("todo")){
+    res.status(400).send({ error: "Todo Field is required" });
+  }
+  
+  else if(todoObj.todo.trim() === ""){
+    res.status(400).send({ error: "Empty todo can't be inserted" });
+  }
+  else if (todos.find(todo => todo.id === todoObj.id))
     res.status(400).send({ error: "ID already occupied" });
   else {
     todos.push(todoObj);
